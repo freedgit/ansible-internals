@@ -1,0 +1,27 @@
+---
+- name: perform things on linux machines
+  hosts: linux
+  debugger: always
+
+  tasks:
+    - name: task zero - template something
+      template:
+        src: linux_template.conf
+        dest: /tmp/linux_template.conf
+
+    - name: task one - copy a file
+      copy:
+        src: linux_file.jpg
+        dest: /tmp/linux_file.jpg
+
+    - name: task two - modifies line in file
+      lineinfile:
+        path: /tmp/linux_template.conf
+        regexp: '^SELINUX='
+        line: SELINUX=enforcing
+
+    - name: task three - restarts service
+      service:
+        name: uptimed
+        state: restarted
+                    

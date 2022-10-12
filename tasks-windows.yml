@@ -1,0 +1,34 @@
+---
+- name: perform things on windows machines
+  hosts: windows
+  vars_files:
+    - inventory/group_vars/credentials.yml
+  tasks:
+    - name: task minus one - creates temp dir
+      win_file:
+        name: C:\Temp
+        state: directory
+        
+    - name: task zero - template something
+      template:
+        src: windows_template.conf
+        dest: "C:\\Temp\\windows_template.conf"
+
+    - name: task one - copy a file
+      win_copy:
+        src: windows_file.jpg
+        dest: c:\Temp\
+
+    - name: task two - modifies line in file
+      win_lineinfile:
+        path: "C:\\Temp\\windows_template.conf"
+        regexp: '^WINDOWS='
+        line: WINDOWS=false
+
+    - name: task three - restarts service
+      win_service:
+        name: windows_exporter
+        state: "{{ item }}"
+      with_items:
+        - stopped
+        - started

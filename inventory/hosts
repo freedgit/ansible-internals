@@ -1,0 +1,5 @@
+[windows]
+win10
+
+[linux]
+builder ansible_user=root
